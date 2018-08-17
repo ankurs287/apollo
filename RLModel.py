@@ -15,11 +15,12 @@ class Inventory:
         self.actions = np.arange(self.nItems)
 
     def reset(self, budget, req, costPerItem, importance):
+        self.actions_chosen = []
         self.req = req
         self.costPerItem = costPerItem
         self.importance = importance
         self.budget = budget
-        self.state = np.concatenate((self.req, self.costPerItem, self.importance))
+        self.state = np.concatenate((req, costPerItem, importance))
         return self.state
 
     # def act(self):
@@ -30,7 +31,7 @@ class Inventory:
         self.budget -= self.req[action] * self.costPerItem[action]
         self.req[action] = 0
         self.importance[action] = 0
-        self.reward = -(np.sum(self.importance)) + self.budget
+        self.reward = -(np.sum(self.importance))
         self.nextState = np.concatenate((self.req, self.costPerItem, self.importance))
         return self.nextState, self.reward, self.done()
 
